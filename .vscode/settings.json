@@ -1,0 +1,29 @@
+{
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.semanticHighlighting.enabled": true,
+  "editor.tokenColorCustomizations": {
+    "[*]": {
+      "textMateRules": [
+        {
+          "scope": "punctuation.definition.tag",
+          "settings": {
+            "foreground": "#89DDFF"
+          }
+        }
+      ]
+    }
+  },
+  "workbench.colorCustomizations": {
+    "editorBracketHighlight.foreground1": "#FFD580",
+    "editorBracketHighlight.foreground2": "#AB9DF2",
+    "editorBracketHighlight.foreground3": "#A8E6CF",
+    "editorBracketHighlight.foreground4": "#FF9AA2",
+    "editorBracketHighlight.foreground5": "#B5EAD7",
+    "editorBracketHighlight.foreground6": "#C7CEEA",
+    "editorBracketHighlight.unexpectedBracket.foreground": "#FF5370"
+  },
+  "[javascriptreact]": {
+    "editor.semanticHighlighting.enabled": true
+  }
+}

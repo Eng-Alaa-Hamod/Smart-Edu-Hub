@@ -1,16 +1,75 @@
-# React + Vite
+# Smart Edu Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Smart Edu Hub is a React-based learning platform for students, teachers, and administrators. It brings courses, lessons, bookings, chat, a digital library, quizzes, achievements, and progress tracking into one application.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Role-based experiences for students, teachers, and administrators
+- Course and lesson management
+- Teacher-student bookings and communication
+- Global and course-specific chat
+- Digital library with PDF reading
+- Interactive quizzes and game-based learning
+- Student achievements and progress tracking
+- Responsive Progressive Web App support
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 and Vite
+- React Router
+- Redux Toolkit and Redux Persist
+- Firebase Authentication and Realtime Database
+- Supabase
+- Tailwind CSS
+- Recharts
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Requirements
+
+- Node.js >= 20
+- npm
+
+### Installation
+
+```bash
+npm install
+```
+
+Create a local environment file from the example and add your Firebase and Supabase configuration:
+
+```bash
+cp .env.example .env
+```
+
+On Windows PowerShell, use:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Run lint checks:
+
+```bash
+npm run lint
+```
+
+## Environment Variables
+
+The required variable names are listed in `.env.example`. Keep your real `.env` file private and configure the same variables in your hosting provider.
+
+## License
+
+This project is for educational and development use.

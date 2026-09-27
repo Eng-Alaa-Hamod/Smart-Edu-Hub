@@ -6,18 +6,27 @@ function Spinner({ className, ...props }) {
     <LoaderIcon
       role="status"
       aria-label="Loading"
-      className={cn("size-4 animate-spin text-current", className)}
+      className={cn("size-5 animate-spin text-teal-600", className)}
       {...props}
     />
   );
 }
 
-function SpinnerCustom({ className, ...props }) {
+function SpinnerCustom({ className, spinnerClassName, inline = false, ...props }) {
+  const Wrapper = inline ? "span" : "div";
+
   return (
-    <div className={cn("flex items-center justify-center gap-3", className)}>
-      <Spinner {...props} />
-    </div>
+    <Wrapper
+      className={cn(
+        inline
+          ? "inline-flex items-center justify-center align-middle"
+          : "flex items-center justify-center gap-3",
+        className,
+      )}
+    >
+      <Spinner className={spinnerClassName} {...props} />
+    </Wrapper>
   );
 }
 
-export { Spinner, SpinnerCustom };
+export { SpinnerCustom };

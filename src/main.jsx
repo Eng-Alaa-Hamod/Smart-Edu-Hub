@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { Store, persistor } from "./store/store/store";
 import { SpinnerCustom } from "./components/ui/spinner";
+import { Toaster } from "sonner";
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={Store}>
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')).render(
       >
         <BrowserRouter>
           <App />
+          <Toaster position="bottom-right" richColors />
         </BrowserRouter>
       </PersistGate>
     </Provider>

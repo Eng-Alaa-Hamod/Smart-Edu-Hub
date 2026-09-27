@@ -1,22 +1,36 @@
-import { Download, ExternalLink, Smartphone } from "lucide-react";
-import { usePWAInstall } from "react-use-pwa-install";
+import { ExternalLink, Smartphone } from "lucide-react";
 
 function getBrowserGuide() {
   const userAgent = navigator.userAgent;
 
-  if (/iPhone|iPad|iPod/i.test(userAgent)) {
+  if (/iPhone|iPad|iPod/i.test(userAgent) && /Safari/i.test(userAgent)) {
     return "In Safari, tap Share, then choose Add to Home Screen.";
   }
 
-  if (/Android/i.test(userAgent)) {
+  if (/Edg/i.test(userAgent)) {
+    return "In Microsoft Edge, open the browser menu, then choose Apps and Install Smart Edu Hub.";
+  }
+
+  if (/Android/i.test(userAgent) && /Chrome/i.test(userAgent)) {
     return "In Chrome or Edge, open the browser menu, then choose Install app or Add to Home screen.";
   }
 
-  return "If the install button is unavailable, open the browser menu and look for Install app or Create shortcut.";
+  if (/Firefox/i.test(userAgent)) {
+    return "Open the browser menu and choose Add to Home Screen or Install, when available.";
+  }
+
+  if (/Safari/i.test(userAgent) && !/Chrome|Android/i.test(userAgent)) {
+    return "In Safari, open the Share menu, then choose Add to Dock or Add to Home Screen.";
+  }
+
+  if (/Chrome/i.test(userAgent)) {
+    return "Open the Chrome menu, then choose Install Smart Edu Hub or Create shortcut.";
+  }
+
+  return "Open your browser menu and look for Install app, Add to Home Screen, or Create shortcut.";
 }
 
 export default function InstallApp() {
-  const install = usePWAInstall();
   const browserGuide = getBrowserGuide();
 
   return (
@@ -27,27 +41,16 @@ export default function InstallApp() {
         </div>
         <h1 className="text-2xl font-bold text-teal-800">Install Smart Edu Hub</h1>
         <p className="mt-2 text-slate-600">
-          Install the app for faster access and a focused learning experience.
+          Follow the instructions for your browser to add Smart Edu Hub to your device.
         </p>
 
-        {install ? (
-          <button
-            type="button"
-            onClick={install}
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-3 font-semibold text-white shadow-md shadow-sky-200 transition hover:from-sky-600 hover:to-teal-600"
-          >
-            <Download className="h-5 w-5" />
-            Install app
-          </button>
-        ) : (
-          <div className="mt-6 rounded-xl border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700">
-            <p>{browserGuide}</p>
-            <p className="mt-2 inline-flex items-center gap-1 text-slate-500">
-              <ExternalLink className="h-4 w-4" />
-              If the app is already installed, you can open it from your device home screen.
-            </p>
-          </div>
-        )}
+        <div className="mt-6 rounded-xl border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700">
+          <p>{browserGuide}</p>
+          <p className="mt-2 inline-flex items-center gap-1 text-slate-500">
+            <ExternalLink className="h-4 w-4" />
+            If the app is already installed, open it from your device home screen.
+          </p>
+        </div>
       </section>
     </main>
   );

@@ -1,0 +1,7 @@
+name = "smart-edu-hub-notifications"
+main = "src/index.js"
+compatibility_date = "2026-09-25"
+
+[vars]
+ONESIGNAL_APP_ID = "1cf97f50-6128-481c-93fe-94fcec5c8ada"
+FRONTEND_ORIGIN = "http://localhost:5173"

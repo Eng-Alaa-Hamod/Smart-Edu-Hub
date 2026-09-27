@@ -13,7 +13,7 @@ import {
   fetchEnrolledCourses,
   unenrollFromCourse,
 } from "@/store/slices/courseStudentSlice";
-import { Spinner, SpinnerCustom } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { useState } from "react";
 
 function EnrolledCourses() {
@@ -162,7 +162,7 @@ function EnrolledCourses() {
                     >
                       {unenrollingCourseId === course.id ? (
                         <>
-                          <Spinner className="text-rose-500" />
+                          <SpinnerCustom inline spinnerClassName="text-rose-500"  />
                         </>
                       ) : (
                         <>

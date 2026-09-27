@@ -16,8 +16,9 @@ import { useForm } from "react-hook-form";
 import { changePasswordSchema } from "./validation/zod";
 import { changePassword, clearAuthMessages } from "@/store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Spinner } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { ConfirmDialog } from "@/components/multi use/ConfirmDialog";
+import { toast } from "sonner";
 
 function ChangePassword() {
   const dispatch = useDispatch();
@@ -25,7 +26,6 @@ function ChangePassword() {
   const {
     loadingChangePassword,
     errorChangePassword,
-    changePasswordMessage,
     user,
   } = useSelector((state) => state.user);
 
@@ -49,7 +49,10 @@ function ChangePassword() {
   const submit = ({ password }) => {
     dispatch(changePassword(password))
       .unwrap()
-      .then(() => reset()) // مسح الحقول
+      .then((message) => {
+        reset();
+        toast.success(message);
+      })
       .catch(() => {});
   };
 
@@ -102,18 +105,13 @@ function ChangePassword() {
                 {errorChangePassword}
               </p>
             )}
-            {changePasswordMessage && (
-              <p className="rounded-md bg-emerald-50 p-3 text-sm text-emerald-700">
-                {changePasswordMessage}
-              </p>
-            )}
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-3">
           <ConfirmDialog
             trigger={<Button type="button" disabled={loadingChangePassword} className="w-full bg-teal-700 text-white hover:bg-teal-800">{loadingChangePassword ? (
               <>
-                <Spinner className="mr-2 text-white" />
+                <SpinnerCustom inline spinnerClassName="mr-2 text-white"  />
                 Saving...
               </>
             ) : (

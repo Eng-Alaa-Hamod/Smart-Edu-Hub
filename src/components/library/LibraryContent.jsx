@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BookOpen, FileText, Upload, ImageUp, Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { Spinner, SpinnerCustom } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import LibraryPdfCard from "./LibraryPdfCard";
 import { EmptyState, ErrorState, LoadingState } from "../multi use/ContentState";
 import {
@@ -137,7 +137,7 @@ function LibraryContent({ role }) {
             >
               {uploading ? (
                 <>
-                  <Spinner className="text-white" />
+                  <SpinnerCustom inline spinnerClassName="text-white"  />
                 </>
               ) : (
                 "Upload PDF"

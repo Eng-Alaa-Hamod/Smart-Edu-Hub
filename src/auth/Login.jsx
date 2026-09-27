@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { loginSchema } from "./validation/zod";
 import { loginUser, clearAuthMessages } from "@/store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Spinner } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 
 function Login() {
   const dispatch = useDispatch();
@@ -127,7 +127,7 @@ function Login() {
           >
             {loadingLogin ? (
               <>
-                <Spinner className="mr-2 inline-block text-white" />
+                <SpinnerCustom inline spinnerClassName="mr-2 inline-block text-white"  />
                 Signing in...
               </>
             ) : (

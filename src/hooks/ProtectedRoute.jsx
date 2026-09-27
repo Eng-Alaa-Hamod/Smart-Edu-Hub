@@ -9,6 +9,10 @@ function ProtectedRoute({ children, role }) {
     return <Navigate to="/" replace state={{ from: location }} />;
   }
 
+  if (!user.emailVerified) {
+    return <Navigate to="/verify-email" replace state={{ from: location }} />;
+  }
+
   if (role && user.role !== role) {
     return (
       <Navigate

@@ -10,14 +10,15 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { Spinner } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { submitBookLesson } from "@/store/slices/BookLessonSlice";
 import { ConfirmDialog } from "@/components/multi use/ConfirmDialog";
+import { toast } from "sonner";
 
 export function CalendarWithTime({ teacher }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const { loading, error, submitted } = useSelector(
+  const { loading, error } = useSelector(
     (state) => state.bookLesson,
   );
   const [date, setDate] = useState(
@@ -27,8 +28,9 @@ export function CalendarWithTime({ teacher }) {
   const [startTime, setStartTime] = useState('00:00');
   const [endTime, setEndTime] = useState('00:00');
 
-  const submitRequest = () => {
-    dispatch(
+  const submitRequest = async () => {
+    try {
+      await dispatch(
       submitBookLesson({
         teacherUID: teacher?.uid || teacher?.id,
         teacherName: `${teacher?.firstName || ""} ${teacher?.secondName || ""}`.trim(),
@@ -41,8 +43,12 @@ export function CalendarWithTime({ teacher }) {
         date,
         startTime,
         endTime,
-      }),
-    );
+        }),
+      ).unwrap();
+      toast.success("Your lesson request was sent successfully!");
+    } catch {
+      return;
+    }
   };
 
   return (
@@ -104,14 +110,9 @@ export function CalendarWithTime({ teacher }) {
             {error}
           </p>
         )}
-        {submitted && (
-          <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-medium text-emerald-700">
-            Your lesson request was sent successfully!
-          </p>
-        )}
         <div className="mt-5 w-full">
           <ConfirmDialog
-            trigger={<button type="button" disabled={loading} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-3 font-semibold text-white shadow-md shadow-sky-200 transition hover:from-sky-600 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-60">{loading && <Spinner className="text-white" />}{loading ? "Sending request..." : "Submit request"}</button>}
+            trigger={<button type="button" disabled={loading} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-3 font-semibold text-white shadow-md shadow-sky-200 transition hover:from-sky-600 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-60">{loading && <SpinnerCustom inline spinnerClassName="text-white"  />}{loading ? "Sending request..." : "Submit request"}</button>}
             title="Send this lesson request?"
             description="Please confirm the selected date and time before sending your request."
             confirmText="Send request"

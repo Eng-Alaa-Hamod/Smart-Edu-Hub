@@ -7,7 +7,7 @@ import {
   deleteLesson,
   fetchLessonsByCourse,
 } from "@/store/slices/LessonTeacherSlice";
-import { Spinner } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { ConfirmDialog } from "@/components/multi use/ConfirmDialog";
 import { EmptyState, ErrorState, LoadingState } from "./ContentState";
 
@@ -61,7 +61,7 @@ function ReadCourse({ teacher, admin = false }) {
           </h1>
           {teacher || admin ? (
             <ConfirmDialog
-              trigger={<button type="button" disabled={deletingCourseId === courseId} className="inline-flex items-center gap-2 rounded-xl bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-600">{deletingCourseId === courseId ? <Spinner className="text-rose-600" /> : <Trash2 className="h-4 w-4" />} Delete course</button>}
+              trigger={<button type="button" disabled={deletingCourseId === courseId} className="inline-flex items-center gap-2 rounded-xl bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-600">{deletingCourseId === courseId ? <SpinnerCustom inline spinnerClassName="text-rose-600"  /> : <Trash2 className="h-4 w-4" />} Delete course</button>}
               title="Delete this course and all its lessons?"
               description="The course, lessons, and uploaded files will be permanently removed."
               confirmText="Delete course"
@@ -117,7 +117,7 @@ function ReadCourse({ teacher, admin = false }) {
                   </h2>
                   {teacher || admin ? (
                     <ConfirmDialog
-                      trigger={<button type="button" disabled={deletingLessonId === selected.id} className="rounded-xl bg-rose-50 p-2 text-rose-600" title="Delete lesson">{deletingLessonId === selected.id ? <Spinner className="text-rose-600" /> : <Trash2 className="h-4 w-4" />}</button>}
+                      trigger={<button type="button" disabled={deletingLessonId === selected.id} className="rounded-xl bg-rose-50 p-2 text-rose-600" title="Delete lesson">{deletingLessonId === selected.id ? <SpinnerCustom inline spinnerClassName="text-rose-600"  /> : <Trash2 className="h-4 w-4" />}</button>}
                       title="Delete this lesson?"
                       description="The lesson and its uploaded PDF will be permanently removed."
                       confirmText="Delete lesson"

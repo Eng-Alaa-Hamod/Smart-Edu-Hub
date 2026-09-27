@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { CalendarDays, Clock3, Mail, Trash2, User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBookLesson, fetchBooksForStudent } from "@/store/slices/BookLessonSlice";
-import { Spinner, SpinnerCustom } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { ConfirmDialog } from "@/components/multi use/ConfirmDialog";
 
 function MyBooking() {
@@ -50,7 +50,7 @@ function MyBooking() {
 									</div>
 								</div>
 								<ConfirmDialog
-									trigger={<button type="button" disabled={loading} className="rounded-xl bg-rose-50 p-2.5 text-rose-600 transition hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-50" title="Delete request">{loading ? <Spinner className="text-rose-600" /> : <Trash2 className="h-4 w-4" />}</button>}
+									trigger={<button type="button" disabled={loading} className="rounded-xl bg-rose-50 p-2.5 text-rose-600 transition hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-50" title="Delete request">{loading ? <SpinnerCustom inline spinnerClassName="text-rose-600"  /> : <Trash2 className="h-4 w-4" />}</button>}
 									title="Delete booking request?"
 									description="This action cannot be undone."
 									confirmText="Delete"

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Camera,
-  CheckCircle2,
   Clock,
   Mail,
   Shield,
@@ -10,10 +9,11 @@ import {
   User,
   UserCheck,
 } from "lucide-react";
-import { Spinner } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { uploadAvatar } from "../../supabase/functions/functions";
 import { updateUserProfile } from "@/store/slices/userSlice";
 import { normalizeCreatedAt } from "@/functions/normalizeCreateat";
+import { toast } from "sonner";
 
 function Profile({ role: roleOverride }) {
   const dispatch = useDispatch();
@@ -25,7 +25,6 @@ function Profile({ role: roleOverride }) {
   const [secondName, setSecondName] = useState(user?.secondName || "");
   const [CV, setCV] = useState(user?.CV || "");
   const [uploadingImage, setUploadingImage] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const [imageError, setImageError] = useState("");
   const role = roleOverride || user?.role || "student";
   const normalizedCreatedAt = normalizeCreatedAt(user?.createdAt);
@@ -38,14 +37,13 @@ function Profile({ role: roleOverride }) {
     if (!file) return;
 
     setImageError("");
-    setSuccessMessage("");
     setUploadingImage(true);
 
     try {
       const photoURL = await uploadAvatar(file, user.uid);
 
       await dispatch(updateUserProfile({ photoURL })).unwrap();
-      setSuccessMessage("Profile photo updated successfully!");
+      toast.success("Profile photo updated successfully!");
     } catch (err) {
       setImageError(err?.message || "Failed to upload image.");
     } finally {
@@ -55,7 +53,6 @@ function Profile({ role: roleOverride }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccessMessage("");
     setImageError("");
 
     const updatedFirstName = (firstName || user?.firstName || "").trim();
@@ -74,7 +71,7 @@ function Profile({ role: roleOverride }) {
           CV: CV.trim(),
         }),
       ).unwrap();
-      setSuccessMessage("Profile information updated successfully!");
+      toast.success("Profile information updated successfully!");
     } catch (err) {
       console.error(err);
     }
@@ -103,7 +100,7 @@ function Profile({ role: roleOverride }) {
 
                 {uploadingImage && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-xs">
-                    <Spinner className="size-8 text-white" />
+                    <SpinnerCustom inline spinnerClassName="size-8 text-white"  />
                   </div>
                 )}
               </div>
@@ -140,13 +137,6 @@ function Profile({ role: roleOverride }) {
             </div>
           </div>
         </div>
-
-        {successMessage && (
-          <div className="flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-medium text-emerald-800 shadow-xs">
-            <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />
-            <span>{successMessage}</span>
-          </div>
-        )}
 
         {(errorUpdateProfile || imageError) && (
           <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-medium text-rose-800 shadow-xs">
@@ -247,7 +237,7 @@ function Profile({ role: roleOverride }) {
                 className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 px-6 py-3 font-semibold text-white shadow-md shadow-sky-200 transition hover:from-sky-600 hover:to-teal-600 active:scale-98 disabled:opacity-60"
               >
                 {loadingUpdateProfile && (
-                  <Spinner className="size-4 text-white" />
+                  <SpinnerCustom inline spinnerClassName="size-4 text-white"  />
                 )}
                 Save Changes
               </button>

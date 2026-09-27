@@ -4,6 +4,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   Timestamp,
   getDocs,
   query,
@@ -11,6 +12,8 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
+import { saveNotification } from "@/store/slices/NotificationSlice";
+import { sendNotification } from "@/functions/sendNotification";
 
 export const fetchBooksForTeacher = createAsyncThunk(
   "BookSlice/fetchBooksForTeacher",
@@ -78,7 +81,7 @@ export const submitBookLesson = createAsyncThunk(
       startTime,
       endTime,
     },
-    { rejectWithValue },
+    { rejectWithValue, dispatch },
   ) => {
     try {
       if (!teacherUID || !studentId || !date || !startTime || !endTime) {
@@ -117,6 +120,29 @@ export const submitBookLesson = createAsyncThunk(
 
       const bookingRef = await addDoc(requestRef, booking);
 
+      const notification = {
+        userId: teacherUID,
+        title: "New booking request",
+        message: `${booking.studentName} sent you a booking request.`,
+        type: "booking",
+        relatedId: bookingRef.id,
+        targetPath: "/teacher/dashboard/bookings",
+      };
+
+      try {
+        await sendNotification(notification);
+      } catch (notificationError) {
+        console.error("Booking push notification failed:", notificationError);
+      }
+
+      try {
+        await dispatch(saveNotification(notification)).unwrap();
+      } catch (notificationError) {
+        console.error("Booking notification save failed:", notificationError);
+      }
+
+      
+
       return { id: bookingRef.id, ...booking };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -126,9 +152,41 @@ export const submitBookLesson = createAsyncThunk(
 
 export const updateBookLessonStatus = createAsyncThunk(
   "BookSlice/updateBookLessonStatus",
-  async ({ bookingId, status }, { rejectWithValue }) => {
+  async ({ bookingId, status }, { rejectWithValue, dispatch }) => {
     try {
-      await updateDoc(doc(db, "bookings", bookingId), { status });
+      const bookingRef = doc(db, "bookings", bookingId);
+      const bookingSnapshot = await getDoc(bookingRef);
+      await updateDoc(bookingRef, { status });
+
+      const booking = bookingSnapshot.exists() ? bookingSnapshot.data() : null;
+      if (booking?.studentId && ["accepted", "rejected"].includes(status)) {
+        const notification = {
+          userId: booking.studentId,
+          title: status === "accepted" ? "Booking accepted" : "Booking declined",
+          message:
+            status === "accepted"
+              ? "Your booking request was accepted."
+              : "Your booking request was declined.",
+          type: "booking",
+          relatedId: bookingId,
+          targetPath: "/student/dashboard/my-bookings",
+        };
+
+        try {
+          await sendNotification(notification);
+        } catch (notificationError) {
+          console.error("Booking status push notification failed:", notificationError);
+        }
+
+        try {
+          await dispatch(saveNotification(notification)).unwrap();
+        } catch (notificationError) {
+          console.error("Booking status notification save failed:", notificationError);
+        }
+
+        
+      }
+
       return { bookingId, status };
     } catch (error) {
       return rejectWithValue(error.message);

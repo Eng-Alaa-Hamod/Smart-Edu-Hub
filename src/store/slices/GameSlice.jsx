@@ -8,7 +8,11 @@ import {
   onDisconnect,
   runTransaction,
 } from "firebase/database";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { rtdb } from "@/firebase/firebase";
+import { db } from "@/firebase/firebase";
+import { saveNotification } from "@/store/slices/NotificationSlice";
+import { sendNotification } from "@/functions/sendNotification";
 
 const generatePIN = async () => {
   for (let i = 0; i < 10; i++) {
@@ -32,7 +36,7 @@ const calcPoints = (answerMs, timeLimitSec) => {
 
 export const hostRoom = createAsyncThunk(
   "GameSlice/hostRoom",
-  async ({ questions }, { rejectWithValue }) => {
+  async ({ questions }, { rejectWithValue, dispatch }) => {
     try {
       const pin = await generatePIN();
       const roomRef = ref(rtdb, `games/${pin}`);
@@ -58,6 +62,39 @@ export const hostRoom = createAsyncThunk(
       });
 
       await set(ref(rtdb, `gameSecrets/${pin}`), { correctAnswers });
+
+      try {
+        const studentsSnapshot = await getDocs(
+          query(collection(db, "users"), where("role", "==", "student")),
+        );
+
+        for (const student of studentsSnapshot.docs) {
+          const notification = {
+            userId: student.id,
+            title: "New quiz game available",
+            message: `A live game is ready. Room PIN: ${pin}`,
+            type: "game",
+            relatedId: pin,
+            targetPath: "/student/dashboard/quizzes",
+          };
+
+          try {
+            await sendNotification(notification);
+          } catch (notificationError) {
+            console.error("Game push notification failed:", notificationError);
+          }
+
+          try {
+            await dispatch(saveNotification(notification)).unwrap();
+          } catch (notificationError) {
+            console.error("Game notification save failed:", notificationError);
+          }
+
+          
+        }
+      } catch (notificationError) {
+        console.error("Unable to load students for game notifications:", notificationError);
+      }
 
       return pin;
     } catch (error) {

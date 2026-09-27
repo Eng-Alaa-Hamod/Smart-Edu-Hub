@@ -17,7 +17,8 @@ import {
   clearAuthMessages,
 } from "@/store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Spinner } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
+import { toast } from "sonner";
 
 function VerifyEmail() {
   const dispatch = useDispatch();
@@ -27,7 +28,6 @@ function VerifyEmail() {
     user,
     loadingEmailVerification,
     errorEmailVerification,
-    emailVerificationMessage,
     loadingVerificationRefresh,
     loadingLogout,
   } = useSelector((state) => state.user);
@@ -54,7 +54,10 @@ function VerifyEmail() {
   }, [user, navigate]);
 
   const handleResend = () => {
-    dispatch(resendEmailVerification());
+    dispatch(resendEmailVerification())
+      .unwrap()
+      .then((message) => toast.success(message))
+      .catch(() => {});
   };
 
   const handleRefresh = () => {
@@ -62,11 +65,14 @@ function VerifyEmail() {
       .unwrap()
       .then((result) => {
         if (result.emailVerified) {
+          toast.success("Email verified successfully.");
           const path =
             user?.role === "teacher"
               ? "/teacher/dashboard"
               : "/student/dashboard";
           navigate(path, { replace: true });
+        } else {
+          toast.info("Email is not verified yet. Open the link from your inbox first.");
         }
       })
       .catch(() => {});
@@ -105,12 +111,6 @@ function VerifyEmail() {
         </CardHeader>
 
         <CardContent className="space-y-3">
-          {emailVerificationMessage && (
-            <p className="rounded-md bg-emerald-50 p-3 text-sm text-emerald-700">
-              {emailVerificationMessage}
-            </p>
-          )}
-
           {errorEmailVerification && (
             <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">
               {errorEmailVerification}
@@ -137,7 +137,7 @@ function VerifyEmail() {
           >
             {loadingVerificationRefresh ? (
               <>
-                <Spinner className="mr-2 text-white" />
+                <SpinnerCustom inline spinnerClassName="mr-2 text-white"  />
                 Checking...
               </>
             ) : (
@@ -158,7 +158,7 @@ function VerifyEmail() {
           >
             {loadingEmailVerification ? (
               <>
-                <Spinner className="mr-2 text-teal-700" />
+                <SpinnerCustom inline spinnerClassName="mr-2 text-teal-700"  />
                 Sending...
               </>
             ) : (
@@ -174,7 +174,7 @@ function VerifyEmail() {
           >
             {loadingLogout ? (
               <>
-                <Spinner className="mr-2 text-teal-700" />
+                <SpinnerCustom inline spinnerClassName="mr-2 text-teal-700"  />
                 Signing out...
               </>
             ) : (

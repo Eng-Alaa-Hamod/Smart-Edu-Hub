@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   BookOpen,
   BarChart3,
+  Bell,
   CalendarCheck,
   CalendarPlus,
   Download,
@@ -42,6 +43,7 @@ const navigationItemsByRole = {
   admin: [
     { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { label: "Profile", href: "/admin/dashboard/profile", icon: ShieldCheck },
+    { label: "Notifications", href: "/admin/dashboard/notifications", icon: Bell },
     { label: "Users", href: "/admin/dashboard/users", icon: User },
     { label: "Teachers" , href: "/admin/dashboard/teachers" , icon: PencilRuler },
     { label: "Bookings", href: "/admin/dashboard/bookings", icon: CalendarCheck },
@@ -59,6 +61,7 @@ const navigationItemsByRole = {
   teacher: [
     { label: "Dashboard", href: "/teacher/dashboard", icon: LayoutDashboard },
     { label: "Profile", href: "/teacher/dashboard/profile", icon: User },
+    { label: "Notifications", href: "/teacher/dashboard/notifications", icon: Bell },
     { label: "My Courses", href: "/teacher/dashboard/courses", icon: BookOpen },
     { label: "Library", href: "/teacher/dashboard/library", icon: Library },
     { label: "Course chat", href: "/teacher/dashboard/course-chat", icon: MessageCircle },
@@ -71,6 +74,7 @@ const navigationItemsByRole = {
   student: [
     { label: "Dashboard", href: "/student/dashboard", icon: LayoutDashboard },
     { label: "Profile", href: "/student/dashboard/profile", icon: User },
+    { label: "Notifications", href: "/student/dashboard/notifications", icon: Bell },
     { label: "Courses", href: "/student/dashboard/courses", icon: BookOpen },
     { label: "Library", href: "/student/dashboard/library", icon: Library },
     { label: "Course chat", href: "/student/dashboard/course-chat", icon: MessageCircle },

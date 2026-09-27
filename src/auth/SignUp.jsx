@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { SignUpSchema } from "./validation/zod";
 import { SignUp as signUpUser , clearAuthMessages} from "@/store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Spinner } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 
 function SignUp() {
   const dispatch = useDispatch();
@@ -146,7 +146,7 @@ function SignUp() {
           >
             {loadingSignUp ? (
               <>
-                <Spinner className="mr-2 inline-block text-white" />
+                <SpinnerCustom inline spinnerClassName="mr-2 inline-block text-white"  />
                 Creating account...
               </>
             ) : (

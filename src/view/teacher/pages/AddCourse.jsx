@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addCourseTeacher } from "@/store/slices/CourseTeacherSlice";
 import { uploadCourseCover } from "@/supabase/functions/functions";
-import { Spinner } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { ConfirmDialog } from "@/components/multi use/ConfirmDialog";
 
 function AddCourse() {
@@ -185,12 +185,12 @@ function AddCourse() {
           <ConfirmDialog
             trigger={<button type="button" disabled={loading || uploading} className="mt-6 w-full rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-3 font-semibold text-white shadow-md transition hover:from-sky-600 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-60">{uploading ? (
               <>
-                <Spinner className="mr-2 inline-block text-white" />
+                <SpinnerCustom inline spinnerClassName="mr-2 inline-block text-white"  />
                 Uploading cover...
               </>
             ) : loading ? (
               <>
-                <Spinner className="mr-2 inline-block text-white" />
+                <SpinnerCustom inline spinnerClassName="mr-2 inline-block text-white"  />
                 Saving course...
               </>
             ) : (

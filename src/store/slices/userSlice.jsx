@@ -26,6 +26,8 @@ import {
 } from "firebase/firestore";
 
 import { normalizeCreatedAt } from "../../functions/normalizeCreateat";
+import { saveNotification } from "@/store/slices/NotificationSlice";
+import { sendNotification } from "@/functions/sendNotification";
 
 const initialState = {
   user: null,
@@ -56,7 +58,7 @@ export const SignUp = createAsyncThunk(
   "userSlice/SignUp",
   async (
     { email, password, firstName, secondName, role },
-    { rejectWithValue },
+    { rejectWithValue, dispatch },
   ) => {
     let createdUser = null;
     try {
@@ -82,6 +84,40 @@ export const SignUp = createAsyncThunk(
       });
 
       await sendEmailVerification(user);
+
+      try {
+        const adminsSnapshot = await getDocs(
+          query(collection(db, "users"), where("role", "==", "admin")),
+        );
+        const displayName = [firstName, secondName].filter(Boolean).join(" ");
+
+        for (const admin of adminsSnapshot.docs) {
+          const notification = {
+            userId: admin.id,
+            title: "New user registration",
+            message: `${displayName || "A new user"} registered as ${role}.`,
+            type: "user_registration",
+            relatedId: user.uid,
+            targetPath: "/admin/dashboard/users",
+          };
+
+          try {
+            await sendNotification(notification);
+          } catch (notificationError) {
+            console.error("User registration push notification failed:", notificationError);
+          }
+
+          try {
+            await dispatch(saveNotification(notification)).unwrap();
+          } catch (notificationError) {
+            console.error("User registration notification save failed:", notificationError);
+          }
+
+          
+        }
+      } catch (notificationError) {
+        console.error("Admin registration notifications failed:", notificationError);
+      }
 
       return {
         uid: user.uid,

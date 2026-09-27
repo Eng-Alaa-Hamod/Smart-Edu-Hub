@@ -11,6 +11,7 @@ import TeacherLeaderboard from "./views/TeacherLeaderboard";
 import StudentLeaderboard from "./views/StudentLeaderboard";
 import TeacherEnd from "./views/TeacherEnd";
 import StudentEnd from "./views/StudentEnd";
+import { SpinnerCustom } from "@/components/ui/spinner";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ export default function App() {
       </div>
     );
   }
-  if (!room) return <p className="rounded-2xl border border-sky-100 bg-white p-8 text-center text-slate-500 shadow-sm">Loading room...</p>;
+  if (!room) return <div className="rounded-2xl border border-sky-100 bg-white p-8"><SpinnerCustom /></div>;
 
   const isTeacher = role === "teacher";
   const status = room.status;

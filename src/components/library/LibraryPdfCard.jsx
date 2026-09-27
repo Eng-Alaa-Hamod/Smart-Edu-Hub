@@ -1,6 +1,6 @@
 import { ArrowRight, FileText, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Spinner } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { ConfirmDialog } from "@/components/multi use/ConfirmDialog";
 
 function LibraryPdfCard({ pdf, role, canDelete, deleting, onDelete }) {
@@ -38,7 +38,7 @@ function LibraryPdfCard({ pdf, role, canDelete, deleting, onDelete }) {
             </button>
             {canDelete && (
               <ConfirmDialog
-                trigger={<button type="button" disabled={deleting} className="inline-flex items-center rounded-xl bg-rose-50 px-3 py-2.5 text-rose-600 hover:bg-rose-100" title="Delete PDF">{deleting ? <Spinner className="text-rose-600" /> : <Trash2 className="h-4 w-4" />}</button>}
+                trigger={<button type="button" disabled={deleting} className="inline-flex items-center rounded-xl bg-rose-50 px-3 py-2.5 text-rose-600 hover:bg-rose-100" title="Delete PDF">{deleting ? <SpinnerCustom inline spinnerClassName="text-rose-600"  /> : <Trash2 className="h-4 w-4" />}</button>}
                 title="Delete this PDF?"
                 description="This file and its cover image will be permanently removed."
                 confirmText="Delete"

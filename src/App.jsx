@@ -1,13 +1,14 @@
 import { lazy, Suspense } from "react";
 
+import { OneSignalInit } from "./OneSignal/OneSignalInit";
 import { Navigate, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Login from "./auth/Login";
 import ProtectedRoute from "./hooks/ProtectedRoute";
 import { useUserListener } from "./hooks/useUserListener";
 import { SpinnerCustom } from "./components/ui/spinner";
-import SignUp from "./auth/SignUp";
 
+const Login = lazy(() => import("./auth/Login"));
+const SignUp = lazy(() => import("./auth/SignUp"));
 const ForgotPassword = lazy(() => import("./auth/ForgotPassword"));
 const StudentDashboard = lazy(() => import("./view/student/dashboard"));
 const TeacherDashboard = lazy(() => import("./view/teacher/dashbaord"));
@@ -64,6 +65,7 @@ const AdminBookings = lazy(() => import("./view/admin/pages/Bookings"));
 const AdminDistributions = lazy(() => import("./view/admin/pages/AdminDistributions"));
 const AdminComparisons = lazy(() => import("./view/admin/pages/AdminComparisons"));
 const AdminTrends = lazy(() => import("./view/admin/pages/AdminTrends"));
+const Notifications = lazy(() => import("./view/Notifications"));
 
 function App() {
   useUserListener();
@@ -75,6 +77,8 @@ function App() {
         <SpinnerCustom className="min-h-screen text-teal-700 [&>svg]:size-9" />
       }
     >
+      <OneSignalInit userId={user?.uid} />
+      
       <Routes>
         <Route
           path="/"
@@ -132,6 +136,7 @@ function App() {
           <Route path="book-lesson" element={<BookLessonWithTeacher />} />
           <Route path="my-bookings" element={<MyBooking />} />
           <Route path="ask-for-date" element={<AskForDate />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
         <Route
           path="/teacher/dashboard"
@@ -158,6 +163,7 @@ function App() {
           <Route path="bookings" element={<BookingRequests />} />
           <Route path="profile" element={<ProfileTeacher />} />
           <Route path="install" element={<InstallApp />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
 
         <Route
@@ -181,6 +187,7 @@ function App() {
           <Route path="chats" element={<AdminChats />} />
           <Route path="users" element={<Users />} />
           <Route path="bookings" element={<AdminBookings />} />
+          <Route path="notifications" element={<Notifications />} />
           <Route path="charts/distributions" element={<AdminDistributions />} />
           <Route path="charts/comparisons" element={<AdminComparisons />} />
           <Route path="charts/trends" element={<AdminTrends />} />

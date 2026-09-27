@@ -20,6 +20,7 @@ import QuizSlice from "../slices/QuizSlice";
 import playerAchievementSlice from "../slices/PLayerSaveAchivementSlice";
 import bookLessonSlice from "../slices/BookLessonSlice";
 import adminSlice from "../slices/adminSlice";
+import notificationSlice from "../slices/NotificationSlice";
 
 const storage = {
   getItem: (key) => Promise.resolve(localStorage.getItem(key)),
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   playerAchievements: playerAchievementSlice,
   bookLesson: bookLessonSlice,
   admin: adminSlice,
+  notification: notificationSlice,
 });
 
 const persistConfig = {

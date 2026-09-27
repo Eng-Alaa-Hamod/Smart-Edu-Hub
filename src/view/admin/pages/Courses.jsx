@@ -4,7 +4,7 @@ import { BookOpen, Search, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ConfirmDialog } from "@/components/multi use/ConfirmDialog";
-import { Spinner, SpinnerCustom } from "@/components/ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { deleteCourseWithLessons } from "@/store/slices/CourseTeacherSlice";
 import { fetchAllCourses } from "@/store/slices/adminSlice";
 
@@ -47,7 +47,7 @@ function Courses() {
                   <div className="mt-5 flex gap-2 border-t border-slate-100 pt-4">
                     <button type="button" onClick={() => navigate(`/admin/dashboard/courses/read/${course.id}`, { state: { course } })} className="rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-sky-700">Read course</button>
                     <ConfirmDialog
-                      trigger={<button type="button" disabled={deletingCourseId === course.id} className="inline-flex items-center gap-2 rounded-xl bg-rose-50 px-3 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100">{deletingCourseId === course.id ? <Spinner className="text-rose-600" /> : <Trash2 className="h-4 w-4" />} Delete</button>}
+                      trigger={<button type="button" disabled={deletingCourseId === course.id} className="inline-flex items-center gap-2 rounded-xl bg-rose-50 px-3 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100">{deletingCourseId === course.id ? <SpinnerCustom inline spinnerClassName="text-rose-600"  /> : <Trash2 className="h-4 w-4" />} Delete</button>}
                       title="Delete this course and all lessons?"
                       description="The course, lessons, and uploaded files will be permanently removed."
                       confirmText="Delete course"
